@@ -26,7 +26,7 @@ public class MealTestData {
     public static final Meal MEAL_ADMIN_2 = new Meal(START_SEQ + 9, LocalDateTime.of(2015, Month.JUNE, 30, 13, 0), "АдминОбед", 500);
     public static final Meal MEAL_ADMIN_3 = new Meal(START_SEQ + 10, LocalDateTime.of(2015, Month.JUNE, 30, 20, 0), "АдминУжин", 499);
 
-    public static final List<Meal> MEALS_USER = Stream.of(
+    public static final List<Meal> MEALS_USER_DELETED = Stream.of(
             MEAL_USER_2, MEAL_USER_3, MEAL_USER_4, MEAL_USER_5, MEAL_USER_6)
             .sorted(Comparator.comparing(Meal::getDateTime).reversed())
             .collect(Collectors.toList());
