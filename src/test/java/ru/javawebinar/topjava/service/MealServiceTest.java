@@ -2,8 +2,10 @@ package ru.javawebinar.topjava.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -115,5 +117,11 @@ public class MealServiceTest {
         Meal created = service.create(newMeal, ADMIN_ID);
         newMeal.setId(created.getId());
         assertMatch(service.get(created.getId(),ADMIN_ID), newMeal);
+    }
+
+    @Test(expected = DuplicateKeyException.class)
+    public void createCheckIndex() {
+        Meal newMeal = new Meal(null, LocalDateTime.of(2015, Month.JUNE, 30, 20, 0), "Ужин", 500);
+        Meal created = service.create(newMeal, ADMIN_ID);
     }
 }
