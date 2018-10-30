@@ -1,14 +1,12 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.ClassRule;
+import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.rules.TestRule;
-import org.junit.rules.TestWatcher;
+import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
-import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -40,45 +38,26 @@ public class MealServiceTest {
 
     private static final Map<String, Long> LOG_MAP = new HashMap<>();
 
-    private long startTimeMethod;
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @ClassRule
-    public static final TestRule watchmanClass = new TestWatcher() {
-        @Override
-        protected void finished(Description description) {
-            for (Map.Entry<String, Long> map : LOG_MAP.entrySet()) {
-                System.out.println(map.getKey() + " : " + map.getValue() + " мс");
-            }
-            super.finished(description);
-        }
-    };
-
     @Rule
-    public final TestRule watchmanMethod = new TestWatcher() {
+    public Stopwatch stopwatch = new Stopwatch() {
         @Override
-        public Statement apply(Statement base, Description description) {
-            return super.apply(base, description);
-        }
-
-        @Override
-        protected void starting(Description description) {
-            super.starting(description);
-            startTimeMethod = System.nanoTime();
-        }
-
-        @Override
-        protected void finished(Description description) {
-            long endTimeMethod = System.nanoTime();
-            long timeMethodPeriod = TimeUnit.NANOSECONDS.toMillis(endTimeMethod - startTimeMethod);
-            log.info("Time test - {} мс", timeMethodPeriod);
-            String methodName = description.getMethodName();
-            LOG_MAP.put(methodName, timeMethodPeriod);
-            super.finished(description);
+        protected void finished(long nanos, Description description) {
+            String testName = description.getMethodName();
+            long timeTest = TimeUnit.NANOSECONDS.toMillis(nanos);
+            log.info("Test {}, time - {} ms", testName, timeTest);
+            LOG_MAP.put(testName, timeTest);
         }
     };
+
+    @AfterClass
+    public static void printTimeTests() {
+        for (Map.Entry<String, Long> map : LOG_MAP.entrySet()) {
+            System.out.println("Test " + map.getKey() + " : " + map.getValue() + " ms");
+        }
+    }
 
     static {
         SLF4JBridgeHandler.install();
