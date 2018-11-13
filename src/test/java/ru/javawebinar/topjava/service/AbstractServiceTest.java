@@ -16,6 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
 import ru.javawebinar.topjava.TimingRules;
 
+import static ru.javawebinar.topjava.Profiles.JDBC;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 
@@ -49,5 +51,12 @@ abstract public class AbstractServiceTest {
         } catch (Exception e) {
             Assert.assertThat(getRootCause(e), instanceOf(exceptionClass));
         }
+    }
+
+    public boolean isJDBC(String[] activeProfiles) {
+        for (String profile : activeProfiles) {
+            if (profile.equals(JDBC)) return true;
+        }
+        return false;
     }
 }

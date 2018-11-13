@@ -1,14 +1,18 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+
+import static ru.javawebinar.topjava.Profiles.JDBC;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Collections;
@@ -24,6 +28,9 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
     private CacheManager cacheManager;
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     protected JpaUtil jpaUtil;
@@ -92,6 +99,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void testValidation() throws Exception {
+        Assume.assumeFalse(isJDBC(environment.getActiveProfiles()));
         validateRootCause(() -> service.create(new User(null, "  ", "mail@yandex.ru", "password", Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "  ", "password", Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.ROLE_USER)), ConstraintViolationException.class);
