@@ -12,7 +12,6 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import static ru.javawebinar.topjava.Profiles.JDBC;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Collections;
@@ -32,13 +31,9 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     private Environment environment;
 
-    @Autowired
-    protected JpaUtil jpaUtil;
-
     @Before
     public void setUp() throws Exception {
         cacheManager.getCache("users").clear();
-        jpaUtil.clear2ndLevelHibernateCache();
     }
 
     @Test

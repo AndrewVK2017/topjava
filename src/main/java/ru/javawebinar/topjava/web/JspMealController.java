@@ -1,18 +1,14 @@
 package ru.javawebinar.topjava.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.service.MealService;
-import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.AbstractMealController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -54,7 +50,7 @@ public class JspMealController extends AbstractMealController {
     }
 
     @PostMapping("/meals")
-    public String saveMeal (HttpServletRequest request){
+    public String saveMeal(HttpServletRequest request) {
         Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
@@ -68,7 +64,7 @@ public class JspMealController extends AbstractMealController {
     }
 
     @PostMapping("filter")
-    public String filterMeal (HttpServletRequest request, Model model){
+    public String filterMeal(HttpServletRequest request, Model model) {
         LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
         LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
