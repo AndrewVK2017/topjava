@@ -27,7 +27,7 @@
             <dt><spring:message code="meals.toTime"/>:</dt>
             <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
         </dl>
-        <button type="submit">Filter</button>
+        <button type="submit"><spring:message code="meals.filter"/></button>
     </form>
     <hr/>
     <a href="meals/create"><spring:message code="meals.addMeal"/></a>
