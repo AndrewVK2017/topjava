@@ -8,6 +8,8 @@ import org.junit.rules.ExternalResource;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -38,6 +40,9 @@ abstract public class AbstractServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Autowired
+    private Environment environment;
+
     static {
         // needed only for java.util.logging (postgres driver)
         SLF4JBridgeHandler.install();
@@ -53,7 +58,8 @@ abstract public class AbstractServiceTest {
         }
     }
 
-    public boolean isJDBC(String[] activeProfiles) {
+    public boolean isJDBC() {
+        String[] activeProfiles = environment.getActiveProfiles();
         for (String profile : activeProfiles) {
             if (profile.equals(JDBC)) return true;
         }
