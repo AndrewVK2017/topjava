@@ -33,7 +33,6 @@ public class MealAjaxController extends AbstractMealController {
                                @RequestParam("dateTime") LocalDateTime dateTime,
                                @RequestParam("description") String description,
                                @RequestParam("calories") Integer calories) {
-//        LocalDateTime time = LocalDateTime.parse(dateTime);
         Meal meal = new Meal(id, dateTime, description, calories);
 
         if (meal.isNew()) {
